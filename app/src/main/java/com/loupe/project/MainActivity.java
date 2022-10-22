@@ -486,6 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void takePhoto() {
+        
         isTakePhoto = true;
         mCamera.takePicture(null, null, null, new Camera.PictureCallback() {
             @Override
