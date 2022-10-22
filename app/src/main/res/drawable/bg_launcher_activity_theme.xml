@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <!-- 渐变 -->
+            <!--<gradient
+                android:startColor="#fb5252"
+                android:endColor="#ff2d55"
+                android:angle="270" />-->
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+
+    <item>
+        <bitmap
+            android:antialias="true"
+            android:gravity="center"
+            android:src="@mipmap/splash_launcher" />
+    </item>
+
+</layer-list>
