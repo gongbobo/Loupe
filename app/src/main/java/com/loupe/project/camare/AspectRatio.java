@@ -5,11 +5,6 @@ import android.os.Parcelable;
 
 import androidx.collection.SparseArrayCompat;
 
-/**
- * @author 郭翰林
- * @date 2019/3/4 0004 11:11
- * 注释:屏宽比
- */
 public class AspectRatio implements Comparable<AspectRatio>, Parcelable {
     private final static SparseArrayCompat<SparseArrayCompat<AspectRatio>> sCache
             = new SparseArrayCompat<>(16);

@@ -9,11 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * @author 郭翰林
- * @date 2020/8/7 0007 17:07
- * 注释:
- */
 public class BitmapUtils {
 
     /**

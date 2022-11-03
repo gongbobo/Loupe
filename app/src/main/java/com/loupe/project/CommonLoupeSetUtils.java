@@ -11,15 +11,15 @@ import android.view.WindowManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class CommonSetUtils {
+public class CommonLoupeSetUtils {
 
-    public static boolean canLightStatusBar() {
+    public static boolean canLightLoupeStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return true;
         }
 
         try {
-            String miuiVersionName = getSystemProperties("ro.miui.ui.version.name");
+            String miuiVersionName = getLoupeSystemProperties("ro.miui.ui.version.name");
             if (miuiVersionName != null) {
                 //miui v9以后的版本执行下面代码
                 int version = Integer.valueOf(miuiVersionName.substring(1));
@@ -49,7 +49,7 @@ public class CommonSetUtils {
         return false;
     }
 
-    public static String getSystemProperties(String key) {
+    public static String getLoupeSystemProperties(String key) {
         System.out.println("obtain key->" + key);
         String value = "";
         try {
@@ -65,14 +65,14 @@ public class CommonSetUtils {
         return value;
     }
 
-    public static void onlyLightStatusbarTextDark(Window window, boolean dark) {
+    public static void onlyLoupeLightStatusbarTextDark(Window window, boolean dark) {
 
-        if (MIUISetStatusBarLightMode(window, dark)) {
+        if (MIUILoupeSetStatusBarLightMode(window, dark)) {
             return;
         }
 
-        if (isFlyme()) {
-            StatusBarColorUtil.setStatusBarDarkIcon(window, dark);
+        if (isLoupeFlyme()) {
+            StatusBarLoupeColorUtil.setStatusBarDarkIcon(window, dark);
             return;
         }
 
@@ -89,11 +89,11 @@ public class CommonSetUtils {
 
     }
 
-    public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
-        return MIUISetStatusBarLightMode(window, dark, false);
+    public static boolean MIUILoupeSetStatusBarLightMode(Window window, boolean dark) {
+        return MIUILoupeSetStatusBarLightMode(window, dark, false);
     }
 
-    public static boolean MIUISetStatusBarLightMode(Window window, boolean dark, boolean transBlack) {
+    public static boolean MIUILoupeSetStatusBarLightMode(Window window, boolean dark, boolean transBlack) {
 
         if (window == null) {
             return false;
@@ -104,7 +104,7 @@ public class CommonSetUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (dark) {
                     try {
-                        String miuiVersionName = getSystemProperties("ro.miui.ui.version.name");
+                        String miuiVersionName = getLoupeSystemProperties("ro.miui.ui.version.name");
                         if (miuiVersionName != null) {
                             //miui v9以后的版本执行下面代码
                             int version = Integer.valueOf(miuiVersionName.substring(1));
@@ -142,7 +142,7 @@ public class CommonSetUtils {
             }
 
             try {
-                String miuiVersionName = getSystemProperties("ro.miui.ui.version.name");
+                String miuiVersionName = getLoupeSystemProperties("ro.miui.ui.version.name");
                 if (miuiVersionName != null) {
                     //miui v9以后的版本执行下面代码
                     int version = Integer.valueOf(miuiVersionName.substring(1));
@@ -183,7 +183,7 @@ public class CommonSetUtils {
         return false;
     }
 
-    public static boolean isFlyme() {
+    public static boolean isLoupeFlyme() {
         try {
             final Method method = Build.class.getMethod("hasSmartBar");
             return method != null;

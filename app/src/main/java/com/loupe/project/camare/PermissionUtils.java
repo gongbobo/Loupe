@@ -16,11 +16,6 @@ import java.util.List;
  * 注释: Android权限申请工具类
  */
 public class PermissionUtils {
-    /**
-     * 注释：权限申请回调
-     * 时间：2018/9/18 0018 17:56
-     * 作者：郭翰林
-     */
     public interface PermissionListener {
         /**
          * 成功

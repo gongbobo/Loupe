@@ -1,7 +1,4 @@
 package com.loupe.project.camare;//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
 
 import android.view.View;
 

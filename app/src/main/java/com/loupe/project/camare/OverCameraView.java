@@ -15,11 +15,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author 郭翰林
- * @date 2019/3/1 0001 9:21
- * 注释:对焦框
- */
 public class OverCameraView extends AppCompatImageView {
     private Context context;
     //焦点附近设置矩形区域作为对焦区域

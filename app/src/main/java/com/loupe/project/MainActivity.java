@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initStatusBar() {
         //取消状态栏
-        if (CommonSetUtils.canLightStatusBar()) {
+        if (CommonLoupeSetUtils.canLightLoupeStatusBar()) {
             //判断是否支持
             UltimateBar.newTransparentBuilder()
                     // 状态栏颜色
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //状态内容颜色
-        CommonSetUtils.onlyLightStatusbarTextDark(this.getWindow(), false);
+        CommonLoupeSetUtils.onlyLoupeLightStatusbarTextDark(this.getWindow(), false);
 
         checkPermissions();
     }

@@ -10,28 +10,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * Created by wangchende on 15-9-7.
- */
-public class StatusBarColorUtil {
-    private static Method mSetStatusBarColorIcon;
-    private static Method mSetStatusBarDarkIcon;
-    private static Field mStatusBarColorFiled;
+public class StatusBarLoupeColorUtil {
+    private static Method mSetStatusBarColorIcons;
+    private static Method mSetStatusBarDarkIcons;
+    private static Field mStatusBarColorFileds;
     private static int SYSTEM_UI_FLAG_LIGHT_STATUS_BAR = 0;
 
     static {
         try {
-            mSetStatusBarColorIcon = Activity.class.getMethod("setStatusBarDarkIcon", int.class);
+            mSetStatusBarColorIcons = Activity.class.getMethod("setStatusBarDarkIcon", int.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
         try {
-            mSetStatusBarDarkIcon = Activity.class.getMethod("setStatusBarDarkIcon", boolean.class);
+            mSetStatusBarDarkIcons = Activity.class.getMethod("setStatusBarDarkIcon", boolean.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
         try {
-            mStatusBarColorFiled = WindowManager.LayoutParams.class.getField("statusBarColor");
+            mStatusBarColorFileds = WindowManager.LayoutParams.class.getField("statusBarColor");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -71,9 +68,9 @@ public class StatusBarColorUtil {
     }
 
     public static void setStatusBarDarkIcon(Activity activity, int color) {
-        if (mSetStatusBarColorIcon != null) {
+        if (mSetStatusBarColorIcons != null) {
             try {
-                mSetStatusBarColorIcon.invoke(activity, color);
+                mSetStatusBarColorIcons.invoke(activity, color);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -81,7 +78,7 @@ public class StatusBarColorUtil {
             }
         } else {
             boolean whiteColor = isBlackColor(color, 50);
-            if (mStatusBarColorFiled != null) {
+            if (mStatusBarColorFileds != null) {
                 setStatusBarDarkIcon(activity, whiteColor, whiteColor);
                 setStatusBarDarkIcon(activity.getWindow(), color);
             } else {
@@ -98,7 +95,7 @@ public class StatusBarColorUtil {
      */
     public static void setStatusBarDarkIcon(Window window, int color) {
         try {
-            setStatusBarColor(window, color);
+            setStatusBarColors(window, color);
             if (Build.VERSION.SDK_INT > 22) {
                 setStatusBarDarkIcon(window.getDecorView(), true);
             }
@@ -166,13 +163,13 @@ public class StatusBarColorUtil {
      * @param window
      * @param color
      */
-    private static void setStatusBarColor(Window window, int color) {
+    private static void setStatusBarColors(Window window, int color) {
         WindowManager.LayoutParams winParams = window.getAttributes();
-        if (mStatusBarColorFiled != null) {
+        if (mStatusBarColorFileds != null) {
             try {
-                int oldColor = mStatusBarColorFiled.getInt(winParams);
+                int oldColor = mStatusBarColorFileds.getInt(winParams);
                 if (oldColor != color) {
-                    mStatusBarColorFiled.set(winParams, color);
+                    mStatusBarColorFileds.set(winParams, color);
                     window.setAttributes(winParams);
                 }
             } catch (IllegalAccessException e) {
@@ -194,15 +191,15 @@ public class StatusBarColorUtil {
             View decorView = window.getDecorView();
             if (decorView != null) {
                 setStatusBarDarkIcon(decorView, dark);
-                setStatusBarColor(window, 0);
+                setStatusBarColors(window, 0);
             }
         }
     }
 
     private static void setStatusBarDarkIcon(Activity activity, boolean dark, boolean flag) {
-        if (mSetStatusBarDarkIcon != null) {
+        if (mSetStatusBarDarkIcons != null) {
             try {
-                mSetStatusBarDarkIcon.invoke(activity, dark);
+                mSetStatusBarDarkIcons.invoke(activity, dark);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
