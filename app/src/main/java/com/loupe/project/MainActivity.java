@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private float tintNum = 0;
 
+    private boolean isRoll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -393,6 +395,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             parameters.setZoom(0);
             mCamera.setParameters(parameters);
         } else if (id == R.id.ivRoll) {
+            AnimSpring.getInstance(ivRoll).startRotateAnim(120, 360);
             //翻转摄像头
             if (mCamera != null) {
                 mCamera.setPreviewCallback(null);
@@ -406,8 +409,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initCamera(isRoll);
         }
     }
-
-    private boolean isRoll;
 
     private void switchFlash() {
         isFlashing = !isFlashing;
@@ -529,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TranslateAnimation animationTwo = new TranslateAnimation(Animation.ABSOLUTE, 0.0f, Animation.ABSOLUTE, dp2Px(INSTANCE, 40),
 
-                Animation.ABSOLUTE, 0.0f, Animation.ABSOLUTE, dp2Px(INSTANCE, 75));
+                Animation.ABSOLUTE, 0.0f, Animation.ABSOLUTE, dp2Px(INSTANCE, 70));
 
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.addAnimation(animationOne);
