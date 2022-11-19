@@ -3,6 +3,7 @@ package com.loupe.project.camare;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.Surface;
@@ -116,7 +117,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private AspectRatio getDeviceAspectRatio(Activity activity) {
         int width = activity.getWindow().getDecorView().getWidth();
         int height = activity.getWindow().getDecorView().getHeight();
-        return AspectRatio.of(Math.min(width, height), Math.max(width, height));
+
+        //适配顶部状态栏高度
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+
+        return AspectRatio.of(Math.min(width, height - statusBarHeight), Math.max(width, height - statusBarHeight));
     }
 
     /**
@@ -154,12 +161,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      * @return True if in landscape, false if portrait
      */
     private boolean isLandscape(int orientationDegrees) {
-        return (orientationDegrees == Surface.ROTATION_90 ||
-                orientationDegrees == Surface.ROTATION_270);
+        return (orientationDegrees == Surface.ROTATION_90 || orientationDegrees == Surface.ROTATION_270);
     }
 
     /**
      * 注释：获取摄像头应该显示的方向
+     *
      * @return
      */
     private int getDisplayOrientation() {
