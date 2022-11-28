@@ -41,9 +41,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.loupe.project.camare.AnimSpring;
 import com.loupe.project.camare.BitmapUtils;
+import com.loupe.project.receiver.BluetoothMonitorReceiver;
 import com.loupe.project.camare.CameraPreview;
 import com.loupe.project.camare.DataCleanManager;
+import com.loupe.project.receiver.NetworkConnectChangedReceiver;
 import com.loupe.project.camare.OverCameraView;
+import com.loupe.project.receiver.PackageReceiver;
+import com.loupe.project.receiver.PhoneReceiver;
+import com.loupe.project.camare.TimerUtils;
+import com.loupe.project.receiver.BatteryBroadcastReceiver;
+import com.loupe.project.receiver.ScreenActionReceiver;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 
@@ -137,14 +144,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean isRoll;
 
+    private int flashClick = 1, lensClick = 1;
+
+    private ScreenActionReceiver screenActionReceiver;
+
+    private NetworkConnectChangedReceiver networkConnectChangedReceiver;
+
+    private PhoneReceiver phoneReceiver;
+
+    private BatteryBroadcastReceiver usbReceiver;
+
+    private BluetoothMonitorReceiver bluetoothMonitorReceiver;
+
+    private PackageReceiver packageReceiver;
+
+    private long lastPictureShowTime = 0, lastFlashShowTime = 0, lastLensShowTime = 0, lastUnderShowTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         INSTANCE = this;
         initView();
+        initTimer();
         initListener();
         initStatusBar();
+
+        screenActionReceiver = new ScreenActionReceiver();
+        screenActionReceiver.register(this);
+
+        networkConnectChangedReceiver = new NetworkConnectChangedReceiver();
+        networkConnectChangedReceiver.register(this);
+
+        phoneReceiver = new PhoneReceiver();
+        phoneReceiver.register(this);
+
+        usbReceiver = new BatteryBroadcastReceiver();
+        usbReceiver.register(this);
+
+        bluetoothMonitorReceiver = new BluetoothMonitorReceiver();
+        bluetoothMonitorReceiver.register(this);
+
+        packageReceiver = new PackageReceiver();
+        packageReceiver.register(this);
+
         try {
             tvCache.setText(DataCleanManager.getTotalCacheSize(INSTANCE));
         } catch (Exception e) {
@@ -358,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (dlPicture.isDrawerOpen(llLeft)) {
                 dlPicture.closeDrawer(llLeft);
             }
+//            TimerUtils.getInstance().startTimer(1000, 30, 0, 1000);
             openSystemPic(Environment.getExternalStorageDirectory().getPath() + File.separator + "DCIM" + File.separator + "Camera");
         } else if (id == R.id.flash_button) {
             switchFlash();
@@ -395,6 +439,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             parameters.setZoom(0);
             mCamera.setParameters(parameters);
         } else if (id == R.id.ivRoll) {
+            lensClick++;
+            if (lensClick % 2 == 0) {
+                long currentLensShowTime = System.currentTimeMillis();
+                if ((currentLensShowTime - lastLensShowTime) / 1000 > 30) {
+                    lastLensShowTime = currentLensShowTime;
+                    //todo 1-4-内部广告位逻辑-点击镜头调整按钮
+
+                }
+            }
             AnimSpring.getInstance(ivRoll).startRotateAnim(120, 360);
             //翻转摄像头
             if (mCamera != null) {
@@ -421,6 +474,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             Toast.makeText(this, "This device does not support flash", Toast.LENGTH_SHORT).show();
         }
+
+        flashClick++;
+        if (flashClick % 2 == 0) {
+            long currentFlashShowTime = System.currentTimeMillis();
+            if ((currentFlashShowTime - lastFlashShowTime) / 1000 > 30) {
+                lastFlashShowTime = currentFlashShowTime;
+                //todo 1-3-内部广告位逻辑-点击手电筒按钮
+
+            }
+
+        }
     }
 
     private void openSystemPic(String path) {
@@ -437,6 +501,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long currentPictureShowTime = System.currentTimeMillis();
+        if ((currentPictureShowTime - lastPictureShowTime) / 1000 >= 30) {
+            lastPictureShowTime = currentPictureShowTime;
+            //todo 1-2-内部广告位逻辑-进入相册
+
+
+        }
+
     }
 
     private void savePhoto() {
@@ -594,5 +666,100 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         matrix.postConcat(matrixMirrorY);
         matrix.postRotate(180);
         return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        TimerUtils.getInstance().startTimer(1000, 5, 0, 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (StatusBarLoupeColorUtil.isAppOnForeground(this)) {
+            long currentUnderShowTime = System.currentTimeMillis();
+            if ((currentUnderShowTime - lastUnderShowTime) / 1000 > 300) {
+                lastUnderShowTime = currentUnderShowTime;
+                //todo 2-1-TW广告位逻辑-在后台倒计时弹出(静默展示)
+
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (screenActionReceiver != null) {
+            screenActionReceiver.unRegister(this);
+        }
+        if (networkConnectChangedReceiver != null) {
+            networkConnectChangedReceiver.unRegister(this);
+        }
+        if (phoneReceiver != null) {
+            phoneReceiver.unRegister(this);
+        }
+        if (usbReceiver != null) {
+            usbReceiver.unRegister(this);
+        }
+        if (bluetoothMonitorReceiver != null) {
+            bluetoothMonitorReceiver.unRegister(this);
+        }
+        if (packageReceiver != null) {
+            packageReceiver.unRegister(this);
+        }
+        TimerUtils.getInstance().cancelTimer();
+    }
+
+    private void initTimer() {
+        TimerUtils.getInstance().setOnTimerFinishInterface(new TimerUtils.OnTimerFinishInterface() {
+            @Override
+            public void onHomeTimerBack() {
+                //todo 2-3-TW广告位逻辑-Home键按下
+
+            }
+
+            @Override
+            public void onPhoneTimeBack() {
+                //todo 2-4-TW广告位逻辑-通话接通
+
+            }
+
+            @Override
+            public void onWifiTimerBack() {
+                //todo 2-5-TW广告位逻辑-WIFI连接/断开
+
+            }
+
+            @Override
+            public void onScreenOnTimerBack() {
+                //todo 2-2-TW广告位逻辑-屏幕解锁
+
+            }
+
+            @Override
+            public void onUsbTimerBack() {
+                //todo 2-7-TW广告位逻辑-数据线插入/拔出
+
+            }
+
+            @Override
+            public void onLowTimerBack() {
+                //todo 2-8-TW广告位逻辑-低电量提示
+
+            }
+
+            @Override
+            public void onBlueTimerBack() {
+                //todo 2-9-TW广告位逻辑-蓝牙打开/关闭/连接设备
+
+            }
+
+            @Override
+            public void onPackageTimerBack() {
+                //todo 2-6-TW广告位逻辑-应用安装/卸载
+
+            }
+        });
     }
 }

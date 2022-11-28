@@ -1,6 +1,8 @@
 package com.loupe.project;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
@@ -9,6 +11,7 @@ import android.view.WindowManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class StatusBarLoupeColorUtil {
     private static Method mSetStatusBarColorIcons;
@@ -210,5 +213,25 @@ public class StatusBarLoupeColorUtil {
                 setStatusBarDarkIcon(activity.getWindow(), dark);
             }
         }
+    }
+
+    public static boolean isAppOnForeground(Context context) {
+
+        ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = context.getApplicationContext().getPackageName();
+        /**
+         * 获取Android设备中所有正在运行的App
+         */
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName) && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

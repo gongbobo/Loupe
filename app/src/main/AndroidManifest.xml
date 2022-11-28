@@ -2,14 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.loupe.project">
-
     <!-- 增加文件存储和访问摄像头的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 闪光灯权限 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 监听来电状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- WIFI网络状态信息权限 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 网络状态权限 用于断网/联网状态下，界面不同的展示 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -27,14 +31,36 @@
         android:theme="@style/BaseLoupeTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.Loupe_Launcher">
+            android:theme="@style/Theme.Loupe_Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ScreenLockActivity"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/FullScreenTheme.Null"
+            android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.settings.INPUT_METHOD_SETTINGS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="screenlock" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Loupe_Launcher">
+
         </activity>
     </application>
 

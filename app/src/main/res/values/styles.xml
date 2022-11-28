@@ -22,6 +22,12 @@
         <item name="android:windowAnimationStyle">@style/Animation</item>
     </style>
 
+    <style name="Theme.Loupe_Splash" parent="@style/BaseLoupeTheme">
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowAnimationStyle">@style/Animation</item>
+    </style>
+
     <style name="Animation">
         <item name="android:taskCloseEnterAnimation">@null</item>
         <item name="android:taskCloseExitAnimation">@null</item>
@@ -35,5 +41,10 @@
         <item name="android:activityCloseExitAnimation">@null</item>
         <item name="android:taskOpenEnterAnimation">@null</item>
         <item name="android:taskOpenExitAnimation">@null</item>
+    </style>
+
+    <style name="FullScreenTheme.Null" parent="BaseLoupeTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
