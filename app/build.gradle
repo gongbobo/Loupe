@@ -4,7 +4,7 @@ android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
     defaultConfig {
-        applicationId "com.loupe.project"
+        applicationId "com.funlooper.magnifiermsy"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 1

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.loupe.project">
+    package="com.funlooper.magnifiermsy">
     <!-- 增加文件存储和访问摄像头的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" /> <!-- 闪光灯权限 -->
@@ -23,15 +23,16 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/lauch_logo"
+
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/lauch_logo"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/BaseLoupeTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.funlooper.magnifiermsy.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Loupe_Splash">
             <intent-filter>
@@ -41,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ScreenLockActivity"
+            android:name="com.funlooper.magnifiermsy.ScreenLockActivity"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -57,7 +58,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.funlooper.magnifiermsy.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Loupe_Launcher">
 

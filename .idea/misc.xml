@@ -4,6 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/soft_xff/Project/LoupeProject/app/src/main/res/layout/activity_main.xml" value="0.3" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/bg_launcher_activity_theme.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/bg_seek_bar.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.13229166666666667" />
+        <entry key="app/src/main/res/layout/activity_screen_lock.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1415" />
+        <entry key="app/src/main/res/mipmap-xxxhdpi/ic_launcher.xml" value="0.1" />
       </map>
     </option>
   </component>
